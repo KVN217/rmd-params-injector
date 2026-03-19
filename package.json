@@ -5,6 +5,11 @@
   "version": "1.0.0",
   "publisher": "KVN217",
   "license": "MIT",
+  "homepage": "https://github.com/KVN217/rmd-params-injector",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KVN217/rmd-params-injector.git"
+  },
   "engines": { "vscode": "^1.85.0" },
   "categories": [
     "Other",
