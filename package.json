@@ -1,0 +1,76 @@
+{
+  "name": "rmd-params-injector",
+  "displayName": "RMD Params Injector",
+  "description": "Automatically injects R Markdown and Quarto params into your R session for interactive development",
+  "version": "1.0.0",
+  "publisher": "KVN217",
+  "license": "MIT",
+  "engines": { "vscode": "^1.85.0" },
+  "categories": [
+    "Other",
+    "Data Science",
+    "Programming Languages"
+  ],
+  "keywords": [
+    "R",
+    "R Markdown",
+    "Quarto",
+    "params",
+    "Positron",
+    "data science",
+    "rmd"
+  ],
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#1a6096",
+    "theme": "dark"
+  },
+  "activationEvents": [
+    "onLanguage:rmd",
+    "onLanguage:r",
+    "onLanguage:quarto"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "rmdParams.inject",
+        "title": "RMD: Inject Params into R Session",
+        "icon": "$(run)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "rmdParams.inject",
+          "when": "resourceExtname == .Rmd || resourceExtname == .qmd",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "RMD Params Injector",
+      "properties": {
+        "rmdParams.autoInjectOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Re-inject params when saving an .Rmd/.qmd file"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.2"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}
