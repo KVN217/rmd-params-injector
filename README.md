@@ -1,7 +1,5 @@
 # RMD Params Injector
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://open-vsx.org/extension/kevinaslesen/rmd-params-injector)
-
 Automatically injects R Markdown / Quarto `params` into your R session 
 when working interactively in Positron or VS Code.
 
