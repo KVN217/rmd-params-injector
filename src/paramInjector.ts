@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { tryAcquirePositronApi } from '@posit-dev/positron';
 import { RmdParams } from './paramParser';
 
 export async function injectParamsIntoR(
@@ -8,52 +9,22 @@ export async function injectParamsIntoR(
 ): Promise<void> {
 
     const rCode = buildRParamsList(params);
+    const positronApi = tryAcquirePositronApi();
 
-    const singleLine = rCode
-        .replace(/\r?\n/g, ' ')
-        .replace(/\s+/g, ' ')
-        .trim();
+    if (positronApi) {
+        // ── Running in Positron — use native runtime API ──────────────────
+        console.log('[RMD Params] ✅ Positron detected, using runtime API');
 
-    // ── Try Positron's executeCode API first ──────────────────────────────
-    // This sends directly to the R console, not a terminal
-    try {
-        await vscode.commands.executeCommand(
-            'positron.executeCode',
-            'r',        // language ID
-            singleLine, // code to execute
-            true,       // focus console
-            true        // allow incomplete (false = must be complete expression)
+        await positronApi.runtime.executeCode(
+            'r',    // language
+            rCode,  // R code to run
+            true    // focus console
         );
 
-        console.log('[RMD Params] Injected via positron.executeCode');
-
-    } catch (err) {
-        console.log('[RMD Params] positron.executeCode failed, trying fallback...', err);
-
-        // ── Fallback: try workbench execute command ───────────────────────
-        try {
-            await vscode.commands.executeCommand(
-                'workbench.action.executeCode.console',
-                singleLine
-            );
-        } catch {
-            // ── Last resort: find R terminal by name ──────────────────────
-            const rTerminal = vscode.window.terminals.find(t =>
-                t.name.toLowerCase().includes('console') ||
-                t.name.toLowerCase().startsWith('r ')   ||
-                t.name === 'R'
-            );
-
-            if (rTerminal) {
-                rTerminal.show(true);
-                rTerminal.sendText(singleLine, true);
-            } else {
-                vscode.window.showErrorMessage(
-                    '❌ Could not find R console. Is R running in Positron?'
-                );
-                return;
-            }
-        }
+    } else {
+        // ── Running in VS Code — fall back to terminal ────────────────────
+        console.log('[RMD Params] VS Code detected, using terminal fallback');
+        await tryTerminalFallback(rCode);
     }
 
     // ── Notify user ───────────────────────────────────────────────────────
@@ -67,6 +38,35 @@ export async function injectParamsIntoR(
             4000
         );
     }
+}
+
+/**
+ * Fallback for VS Code — uses = instead of <- to avoid PowerShell conflicts
+ */
+async function tryTerminalFallback(rCode: string): Promise<void> {
+    const terminal =
+        vscode.window.terminals.find(t =>
+            t.name === 'R Console'                      ||
+            t.name === 'R'                              ||
+            t.name.toLowerCase().includes('r console') ||
+            t.name.toLowerCase().startsWith('r ')
+        ) ?? vscode.window.activeTerminal;
+
+    if (!terminal) {
+        vscode.window.showErrorMessage(
+            '❌ Could not find R console. Is R running?'
+        );
+        return;
+    }
+
+    const singleLine = rCode
+        .replace(/\r?\n/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+    console.log(`[RMD Params] Injecting via terminal: "${terminal.name}"`);
+    terminal.show(true);
+    terminal.sendText(singleLine, true);
 }
 
 export function buildRParamsList(params: RmdParams): string {

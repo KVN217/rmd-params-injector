@@ -56,15 +56,6 @@ whenever you switch to a parameterized file.
 |---|---|---|
 | `rmdParams.autoInjectOnSave` | `true` | Re-inject params on file save |
 
-## Manual Inject
-
-Press `Ctrl+Shift+P` → **"RMD: Inject Params into R Session"**
-
-## Requirements
-
-- Positron **or** VS Code with the R extension
-- An active R session
-
 ## License
 
 MIT
