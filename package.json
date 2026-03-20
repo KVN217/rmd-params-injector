@@ -2,7 +2,7 @@
   "name": "rmd-params-injector",
   "displayName": "RMD Params Injector",
   "description": "Automatically injects R Markdown and Quarto params into your R session for interactive development",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "publisher": "KVN217",
   "license": "MIT",
   "homepage": "https://github.com/KVN217/rmd-params-injector",
@@ -11,7 +11,7 @@
     "url": "https://github.com/KVN217/rmd-params-injector.git"
   },
   "engines": {
-    "vscode": "^1.110.0"
+    "vscode": "^1.85.0"
   },
   "categories": [
     "Other",
@@ -75,7 +75,7 @@
     "@types/js-yaml": "^4.0.9",
     "@types/mocha": "^10.0.10",
     "@types/node": "^20.19.37",
-    "@types/vscode": "^1.110.0",
+    "@types/vscode": "^1.85.0",
     "typescript": "^5.3.2"
   },
   "dependencies": {
