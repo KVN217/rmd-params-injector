@@ -2,7 +2,7 @@
   "name": "rmd-params-injector",
   "displayName": "RMD Params Injector",
   "description": "Automatically injects R Markdown and Quarto params into your R session for interactive development",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "publisher": "KVN217",
   "license": "MIT",
   "homepage": "https://github.com/KVN217/rmd-params-injector",
@@ -79,7 +79,7 @@
     "typescript": "^5.3.2"
   },
   "dependencies": {
-    "@posit-dev/positron": "^0.2.2",
+    "@posit-dev/positron": "^0.2.4",
     "js-yaml": "^4.1.0"
   }
 }

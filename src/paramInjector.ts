@@ -15,10 +15,10 @@ export async function injectParamsIntoR(
         // ── Running in Positron — use native runtime API ──────────────────
         console.log('[RMD Params] ✅ Positron detected, using runtime API');
 
-        await positronApi.runtime.executeCode(
+        await positronApi.runtime.evaluateCode(
             'r',    // language
-            rCode,  // R code to run
-            true    // focus console
+            rCode  // R code to run
+            // true    // focus console
         );
 
     } else {
