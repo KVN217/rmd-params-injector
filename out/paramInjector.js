@@ -11,10 +11,20 @@ async function injectParamsIntoR(params, fileName, silent = false) {
     if (positronApi) {
         // ── Running in Positron — use native runtime API ──────────────────
         console.log('[RMD Params] ✅ Positron detected, using runtime API');
-        await positronApi.runtime.evaluateCode('r', // language
-        rCode // R code to run
-        // true    // focus console
-        );
+        if (typeof positronApi.runtime.evaluateCode === 'function') {
+            // New API (Positron 0.2.4+)
+            console.log('[RMD Params] Using evaluateCode');
+            await positronApi.runtime.evaluateCode('r', rCode);
+        }
+        else if (typeof positronApi.runtime.executeCode === 'function') {
+            // Older Positron fallback
+            console.log('[RMD Params] evaluateCode not found, falling back to executeCode');
+            await positronApi.runtime.executeCode('r', rCode, true);
+        }
+        else {
+            console.warn('[RMD Params] Neither evaluateCode nor executeCode found, falling back to terminal');
+            await tryTerminalFallback(rCode);
+        }
     }
     else {
         // ── Running in VS Code — fall back to terminal ────────────────────

@@ -2,6 +2,15 @@
 
 All notable changes to **RMD Params Injector** will be documented here.
 
+## [1.1.1] - 2026-04-08
+### Changed
+- Create fallback to use executeCode if older Positron version is used
+
+---
+## [1.1.0] - 2026-04-08
+### Changed
+- Use evaluateCode instead of executeCode to update params (requires Positron 2026.04.0+)
+
 ---
 
 ## [1.0.4] - 2026-03-20
